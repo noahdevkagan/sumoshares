@@ -8,6 +8,7 @@ import { holder } from './holder';
 import { admin } from './admin';
 import { reports } from './reports';
 import { daily } from './cron';
+import { homePage, REPO_URL } from './home';
 import { fmtUsd } from './logic';
 
 const app = newApp();
@@ -15,14 +16,14 @@ app.use('*', secureHeaders({ referrerPolicy: 'same-origin', contentSecurityPolic
 app.use('*', sameOrigin);
 app.use('*', async (c, next) => { c.set('session', await readSession(c as C)); await next(); });
 
-app.get('/', (c) => { const s = c.get('session'); return c.redirect(!s ? '/login' : s.isAdmin ? '/admin' : '/me'); });
+app.get('/', (c) => { const s = c.get('session'); if (s) return c.redirect(s.isAdmin ? '/admin' : '/me'); return c.html(homePage(c.env.APP_NAME)); });
 
 app.get('/login', (c) => page(c, 'Log in', html`<div class="card" style="max-width:420px;margin:48px auto">
   <h1>${c.env.APP_NAME}</h1><p class="muted">See your equity and exercise options. Enter the email on file and we'll send a login link.</p>
   ${c.req.query('sent') ? html`<div class="banner info">If that email is on file, a login link is on its way. It works for 30 minutes.</div>` : ''}
   ${c.req.query('dev') ? html`<div class="banner warn small">Dev mode link: <a href="${c.req.query('dev')}">${c.req.query('dev')}</a></div>` : ''}
   ${c.req.query('bad') ? html`<div class="banner bad">That link expired or was already used. Request a new one.</div>` : ''}
-  <form class="stack" method="post" action="/login"><label>Email<input type="email" name="email" required autofocus></label><button class="btn primary">Email me a login link</button></form></div>`));
+  <form class="stack" method="post" action="/login"><label>Email<input type="email" name="email" required autofocus></label><button class="btn primary">Email me a login link</button></form><p class="small muted" style="margin-top:16px"><a href="/">What is ${c.env.APP_NAME}?</a> · <a href="${REPO_URL}">Open source on GitHub</a></p></div>`));
 
 app.post('/login', async (c) => {
   const f = await c.req.parseBody();

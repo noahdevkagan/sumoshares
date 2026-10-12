@@ -137,6 +137,7 @@ npx wrangler dev
 |---|---|
 | `schema.sql` | Tables. Audit log and transactions are append-only (enforced by triggers) |
 | `src/logic.ts` | Vesting, balances and cap table math (no I/O, easy to test) |
+| `src/home.ts`, `public/` | Public landing page and its screenshots (edit or delete for your company) |
 | `src/holder.ts` | Holder portal, exercise flow, certificates, documents |
 | `src/admin.ts` | Admin screens and ledger actions |
 | `src/reports.ts` | CSV, OCF and backup exports |
