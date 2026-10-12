@@ -8,11 +8,11 @@ export type Env = {
   ADMIN_EMAILS: string;          // comma-separated
   SESSION_SECRET: string;        // wrangler secret
   MAIL_FROM: string;
-  RESEND_API_KEY?: string;       // wrangler secret (optional; without it, login links are logged)
+  SENDFOX_API_KEY?: string;      // wrangler secret: SendFox transactional key (without a mail key, login links are logged)
+  RESEND_API_KEY?: string;       // wrangler secret (optional alternative to SendFox)
   STRIPE_SECRET_KEY?: string;    // optional: enables "Pay online"
   STRIPE_WEBHOOK_SECRET?: string;
   DEV_SHOW_LINKS?: string;       // "1" in local dev: show magic link on screen
-  EMAIL?: { send(m: { to: string; from: string; subject: string; text?: string; html?: string }): Promise<unknown> }; // Cloudflare Email Sending binding
 };
 
 export async function all<T = any>(db: D1Database, sql: string, ...params: unknown[]): Promise<T[]> {

@@ -8,7 +8,7 @@ A small, self-hosted cap table and option-exercise app. It replaces Carta for co
 - track 409A valuations and option deadlines, with email reminders
 - export everything cleanly (CSV, Open Cap Table Format) for lawyers, auditors or a buyer
 
-It runs entirely on Cloudflare: Workers (app), D1 (database), R2 (documents and nightly backups), Cron Triggers (reminders) and Email Sending (login links). Expected cost: about $5 a month (Workers Paid plan, needed for Email Sending).
+It runs entirely on Cloudflare: Workers (app), D1 (database), R2 (documents and nightly backups), Cron Triggers (reminders). Email (login links, reminders) goes through [SendFox](https://sendfox.com) transactional email. Expected cost: free on Cloudflare's free plan for a typical company.
 
 We built it to move AppSumo off Carta (about $10k a year) after seeing we only used a fraction of it. More at [sumoshares.com](https://sumoshares.com).
 
@@ -78,9 +78,9 @@ npx wrangler r2 bucket create sumoshares-docs
 npx wrangler d1 execute sumoshares --remote --file=schema.sql
 ```
 
-Edit `wrangler.toml`: under `[env.production]` set the `routes` line to your domain, and under `[env.production.vars]` set `APP_URL`, `ADMIN_EMAILS` and `MAIL_FROM` (an address on your domain). Keep `routes` and `send_email` under `[env.production]` and not under `.vars`, or Cloudflare treats them as plain text and email silently won't send.
+Edit `wrangler.toml`: under `[env.production]` set the `routes` line to your domain, and under `[env.production.vars]` set `APP_URL`, `ADMIN_EMAILS` and `MAIL_FROM` (an address on your domain). Keep `routes` under `[env.production]` and not under `.vars`, or Cloudflare treats it as plain text.
 
-Email: in the Cloudflare dashboard go to **Compute > Workers plans** and upgrade to Paid, then **Email Service > Email Sending > Onboard Domain**, pick your domain and click **Activate** (it adds the DNS records). Prefer Resend? Set `RESEND_API_KEY` as a secret instead.
+Email: in SendFox, add your domain under **Settings > Domains** and add the 3 DNS records it shows, then create a transactional API key under **Transactional** and run `npx wrangler secret put SENDFOX_API_KEY --env production`. `MAIL_FROM` must be on that domain. Prefer Resend? Set `RESEND_API_KEY` as a secret instead.
 
 ```bash
 openssl rand -hex 32 | npx wrangler secret put SESSION_SECRET --env production

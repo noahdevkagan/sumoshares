@@ -32,7 +32,6 @@ crons = ["0 14 * * *"]   # daily 9am Central
 [env.production]
 name = "sumoshares"
 routes = [{ pattern = "equity.example.com", custom_domain = true }]
-send_email = [{ name = "EMAIL" }]
 [env.production.observability]
 enabled = true
 [env.production.vars]

@@ -50,8 +50,8 @@ export function homePage(appName: string) {
 </section>
 
 <div class="facts">
-  <div class="fact"><b>~$5/mo</b><span>Cloudflare Workers Paid, vs about $10k/yr on Carta</span></div>
-  <div class="fact"><b>15 min</b><span>to deploy: Workers, D1, R2, Email Sending</span></div>
+  <div class="fact"><b>~$0/mo</b><span>Cloudflare free plan + SendFox email, vs about $10k/yr on Carta</span></div>
+  <div class="fact"><b>15 min</b><span>to deploy: Workers, D1, R2, SendFox email</span></div>
   <div class="fact"><b>0 diffs</b><span>our import vs Carta, across every holder and grant</span></div>
   <div class="fact"><b>MIT</b><span>open source license, your data stays in your account</span></div>
 </div>
@@ -69,7 +69,7 @@ export function homePage(appName: string) {
 <p class="sub">Full walkthrough in the <a href="${REPO_URL}#readme">README</a>.</p>
 <div class="steps">
   <div class="step"><h3>Export from Carta</h3><p>Run reports, then export Securities Ledger, Stakeholder Details, Exercised and Settled, and OCX to Excel. Download your certificates and 409A reports.</p></div>
-  <div class="step"><h3>Deploy to Cloudflare</h3><p>Clone the repo, create the D1 database and R2 bucket, turn on Email Sending for your domain, then <code>wrangler deploy</code>.</p></div>
+  <div class="step"><h3>Deploy to Cloudflare</h3><p>Clone the repo, create the D1 database and R2 bucket, add a SendFox transactional key for email, then <code>wrangler deploy</code>.</p></div>
   <div class="step"><h3>Import and tie out</h3><p>Run the importer, then the tie-out script. It checks every total, holder and grant against Carta before you cancel.</p></div>
 </div>
 
