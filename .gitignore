@@ -6,3 +6,4 @@ seed-carta.sql
 tieout.targets.json
 carta-exports/
 *.xlsx
+wrangler.production.toml
