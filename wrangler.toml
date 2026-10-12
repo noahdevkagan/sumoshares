@@ -1,0 +1,49 @@
+name = "sumoshares"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true
+
+[vars]
+APP_NAME = "SumoShares"
+APP_URL = "http://localhost:8787"
+ADMIN_EMAILS = "you@example.com"
+MAIL_FROM = "Equity <equity@example.com>"
+DEV_SHOW_LINKS = "1"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sumoshares"
+database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+
+[[r2_buckets]]
+binding = "DOCS"
+bucket_name = "sumoshares-docs"
+
+[triggers]
+crons = ["0 14 * * *"]   # daily 9am Central
+
+# Production overrides: `wrangler deploy --env production`
+[env.production]
+name = "sumoshares"
+routes = [{ pattern = "equity.example.com", custom_domain = true }]
+send_email = [{ name = "EMAIL" }]
+[env.production.observability]
+enabled = true
+[env.production.vars]
+APP_NAME = "SumoShares"
+APP_URL = "https://equity.example.com"
+ADMIN_EMAILS = "you@example.com"
+MAIL_FROM = "Equity <equity@example.com>"
+DEV_SHOW_LINKS = "0"
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "sumoshares"
+database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+[[env.production.r2_buckets]]
+binding = "DOCS"
+bucket_name = "sumoshares-docs"
+[env.production.triggers]
+crons = ["0 14 * * *"]

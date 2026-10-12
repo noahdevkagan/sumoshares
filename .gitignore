@@ -1,0 +1,8 @@
+node_modules
+.wrangler
+.dev.vars
+seed-carta.sql
+*.log
+tieout.targets.json
+carta-exports/
+*.xlsx
